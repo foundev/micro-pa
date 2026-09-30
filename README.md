@@ -1,6 +1,7 @@
 # micro-pa
 
 [![ci](https://github.com/foundev/micro-pa/actions/workflows/ci.yml/badge.svg)](https://github.com/foundev/micro-pa/actions/workflows/ci.yml)
+[![release](https://img.shields.io/github/v/release/foundev/micro-pa)](https://github.com/foundev/micro-pa/releases)
 [![go](https://img.shields.io/badge/go-1.25-00ADD8?logo=go&logoColor=white)](https://go.dev)
 [![deps](https://img.shields.io/badge/dependencies-none-brightgreen)](#development)
 [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
@@ -24,6 +25,11 @@ go build -o mpa ./cmd/mpa
 export OPENROUTER_API_KEY=sk-or-...
 ./mpa "what should I focus on today?"
 ```
+
+Prebuilt binaries for Linux, macOS and Windows are on the
+[releases page](https://github.com/foundev/micro-pa/releases). Each archive
+unpacks to a single `mpa` binary, plus the README and license. Release builds
+report the tagged version from `mpa -version`; a local `go build` reports `dev`.
 
 Other ways to start it:
 
@@ -191,6 +197,11 @@ internal/config    config file, environment and defaults
 
 Tests never touch the network. The HTTP client takes a swappable transport, so
 the CLI tests drive the full request path in-process.
+
+Releases are cut from tags: pushing a `v*` tag runs
+`.github/workflows/release.yml`, which cross-compiles Linux, macOS and Windows
+binaries (amd64 and arm64), stamps the tag into `mpa -version`, and publishes
+the archives with checksums to the releases page.
 
 ## Not here yet
 

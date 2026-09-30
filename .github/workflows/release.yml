@@ -1,0 +1,54 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Test
+        run: go test ./...
+
+      - name: Build archives
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME}"
+          mkdir -p dist
+          for target in linux/amd64 linux/arm64 darwin/amd64 darwin/arm64 windows/amd64 windows/arm64; do
+            os="${target%/*}"
+            arch="${target#*/}"
+            ext=""
+            [ "$os" = windows ] && ext=".exe"
+            name="micro-pa_${version}_${os}_${arch}"
+            mkdir -p "dist/${name}"
+            CGO_ENABLED=0 GOOS="$os" GOARCH="$arch" go build \
+              -trimpath -ldflags "-s -w -X main.version=${version}" \
+              -o "dist/${name}/mpa${ext}" ./cmd/mpa
+            cp README.md LICENSE "dist/${name}/"
+            if [ "$os" = windows ]; then
+              (cd dist && zip -qr "${name}.zip" "${name}")
+            else
+              (cd dist && tar -czf "${name}.tar.gz" "${name}")
+            fi
+            rm -rf "dist/${name}"
+          done
+          (cd dist && sha256sum ./*.tar.gz ./*.zip > checksums.txt)
+          ls -la dist
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: dist/*
+          generate_release_notes: true

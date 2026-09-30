@@ -25,8 +25,10 @@ import (
 	"micro-pa/internal/tools"
 )
 
-// version is the release string printed by -version.
-const version = "0.1.0"
+// version is the release string printed by -version. It reads "dev" for source
+// builds; release builds override it with -ldflags "-X main.version=<tag>";
+// see .github/workflows/release.yml.
+var version = "dev"
 
 // maxHistory caps how many conversation messages are kept and replayed.
 const maxHistory = 40
