@@ -1,0 +1,5 @@
+# built binary
+/mpa
+
+# local state from `make demo`
+/.demo/
