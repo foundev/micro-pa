@@ -1,5 +1,10 @@
 # micro-pa
 
+[![ci](https://github.com/foundev/micro-pa/actions/workflows/ci.yml/badge.svg)](https://github.com/foundev/micro-pa/actions/workflows/ci.yml)
+[![go](https://img.shields.io/badge/go-1.25-00ADD8?logo=go&logoColor=white)](https://go.dev)
+[![deps](https://img.shields.io/badge/dependencies-none-brightgreen)](#development)
+[![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
 A small personal assistant in your terminal: one Go binary, no services, no
 database. It talks to a model, remembers things between sessions, keeps a task
 list, and can read files or run shell commands when you let it.
@@ -192,3 +197,7 @@ the CLI tests drive the full request path in-process.
 The things a bigger personal agent has that this one deliberately leaves out:
 streaming replies, a Telegram or Slack front end, scheduled runs, subagents,
 web search, a sandbox for the shell, MCP, and per-conversation model settings.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
